@@ -116,6 +116,10 @@ class HomePage extends React.Component {
     print() {
         console.log(this.state);
       }
+    injectStyleFunc(comp){
+        const styledComp = injectSheet(styles()[0])(comp)
+        return <styledComp />;
+    }
     render()
     {
       const buttonLoggedOutArray = ["מתווכים","השכרה","מכירה"];
@@ -123,9 +127,8 @@ class HomePage extends React.Component {
       const buttonsArray =  buttonLoggedOutArray.map((buttonString, index) => (
         typeof buttonLoggedOutArrayHrefs[index] === 'function' ? 
         <Button size="large" color="inherit" key={buttonString} onClick={buttonLoggedOutArrayHrefs[index]}>{buttonString}</Button> :
-        <NavLink className="navLinkBtn" key={buttonString} to={buttonLoggedOutArrayHrefs[index]}><Button size="large" color="inherit">{buttonString}</Button></NavLink>
+        <Button size="large" color="inherit" key={buttonString} href={buttonLoggedOutArrayHrefs[index]}>{buttonString}</Button>//<NavLink className="navLinkBtn" key={buttonString} to={buttonLoggedOutArrayHrefs[index]}></NavLink>
       ))
-      
       const Home = ({classes}) => ( 
         <div className="bg">
             <NavBar navButtons={buttonsArray} enterHoverState={this.enterHoverState} leaveHoverState={this.leaveHoverState} hoverState={this.state.hoverState} />

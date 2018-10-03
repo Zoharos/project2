@@ -1,0 +1,63 @@
+html,body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+   }
+   .imgbox {
+    display: grid;
+    height: 100%;
+   }
+   .loginDiv {
+    width: 75%;
+    margin: auto;
+    margin-top: 50px;
+   }
+   .center-fit {
+    max-width: 100%;
+    max-height: 150%;
+    margin: auto;
+   }
+   .bg { 
+     background-image: url("../statics/HomePagePicture.jpg");
+     width: 100%;
+     height: 120%;
+     background-repeat: no-repeat;
+     background-size: cover;
+   }
+   .navBar { 
+     flex-grow: 1;
+   }
+    .navBarLogoImg { 
+     background-image: url("../statics/RealNadlanNavWhite.png");
+     width: 75px;
+     height: 75px;
+   }
+   .navBar:hover .navBarLogoImg { 
+     background-image: url("../statics/RealNadlanNavBlack.png");
+     width: 75px;
+     height: 75px;
+   } 
+   .navLinkBtn {
+     text-decoration: none;
+     color: inherit;
+   }
+   .right {
+     float: right;
+   }
+   .left {
+     float: left;
+   }
+   .homeCard {
+     margin: 10%;
+     width: 400px;
+   }
+   .bgCard { 
+     width: 100%;
+     height: 100%;
+     background-repeat: no-repeat;
+     background-size: cover;
+   }
+   .fullWidth {
+     width: 100%;
+   }

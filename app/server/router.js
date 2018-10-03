@@ -1,6 +1,13 @@
 import { renderToString } from 'react-dom/server'
 import React from 'react';
 import { matchPath, StaticRouter } from 'react-router-dom';
+import { SheetsRegistry } from 'react-jss/lib/jss';
+import JssProvider from 'react-jss/lib/JssProvider';
+import {
+  MuiThemeProvider,
+  createMuiTheme,
+  createGenerateClassName,
+} from '@material-ui/core/styles';
 
 import routes from './routes';
 import renderFullPage from './renderFullPage';
@@ -18,17 +25,38 @@ export default function router(req, res) {
 
     return getPokemon.withAbility('telepathy')
         .then(resp => {
-            const pokemon = { list: resp.data.pokemon } ;
+            
+            const sheetsRegistry = new SheetsRegistry();
+
+            // Create a sheetsManager instance.
+            const sheetsManager = new Map();
+          
+            // Create a theme instance.
+            const theme = createMuiTheme({
+                palette: {
+                    primary: {
+                      main: '#2196f3',
+                   },
+                },
+            });
+          
+            // Create a new class name generator.
+            const generateClassName = createGenerateClassName();
 
             const context = {}
-            
-            const html = renderToString(
-                <StaticRouter context={context} location={req.url} >
-                    <App pokemon={pokemon}/>
-                </StaticRouter>
+     
+        // Grab the CSS from our sheetsRegistry.
+            const html = renderToString( 
+            <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
+                <MuiThemeProvider theme={theme} sheetsManager={sheetsManager}>
+                    <StaticRouter context={context} location={req.url} >
+                        <App />
+                    </StaticRouter>
+                </MuiThemeProvider>
+            </JssProvider> 
             )
-
-            res.status(200).send(renderFullPage(html, pokemon));
+            const css = sheetsRegistry.toString();
+            res.status(200).send(renderFullPage(html, css));
         })
         .catch(err => res.status(404).send(`${err}: Oh No! I cannot find the telepathic pokemon... maybe they knew we were coming!`));
 };

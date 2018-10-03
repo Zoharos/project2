@@ -1,25 +1,46 @@
-var path = require('path');
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = {
-    devtool: 'inline-source-map',
-    entry: ['./app/index.js'],
-    output: {
-        path: path.join(__dirname, 'build'),
-        filename: 'bundle.js'
-    },
-    module: {
-        loaders: [
-            {
-                test: /.js$/,
-                loader: 'babel-loader',
-                include: path.join(__dirname, 'app'),
-                exclude: /node_modules/,
-                query: {
-                    presets: ['es2015', 'react']
-                }
-            }
-        ]
-    }
+  mode: "development",
+  entry: './app/index.js',
+  output: {
+    path: path.resolve(__dirname, "build"),
+    filename: 'bundle.js'
+  },
+  module: {
+    rules: 
+    [
+    {
+     test: /\.(png|jpg)$/,
+     loader: 'file-loader',
+     options: {
+        name: '[name].[ext]',
+        outputPath: './statics'
+      }
+     },
+     {
+      test: /\.(ico)$/,
+      loader: 'file-loader',
+      options: {
+         name: '[name].[ext]',
+       }
+      },
+     {
+      test: /\.css$/,
+      use: [ 'style-loader', 'css-loader' ]
+     },
+     {
+      test: /\.js$/,
+      include: [
+        path.resolve(__dirname, "app")
+      ],
+      exclude: [
+       path.resolve(__dirname, "node_modules")
+      ],
+      loader: 'babel-loader'
+     }
+    ]
+  }
 };

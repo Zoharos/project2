@@ -1,6 +1,6 @@
 const routes = [
     '/',
-    '/pokemon',
+    '/estate',
     '/pokemon/ability/:ability'
 ]
 

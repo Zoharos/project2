@@ -124,11 +124,11 @@ class HomePage extends React.Component {
     {
       const { classes } = this.props;
       const buttonLoggedOutArray = ["מתווכים","השכרה","מכירה"];
-      const buttonLoggedOutArrayHrefs = [this.handleClickOpen,"./real_estate","./"];
+      const buttonLoggedOutArrayHrefs = [this.handleClickOpen,"./estate","./"];
       const buttonsArray =  buttonLoggedOutArray.map((buttonString, index) => (
         typeof buttonLoggedOutArrayHrefs[index] === 'function' ? 
         <Button size="large" color="inherit" key={buttonString} onClick={buttonLoggedOutArrayHrefs[index]}>{buttonString}</Button> :
-        <Button size="large" color="inherit" key={buttonString} href={buttonLoggedOutArrayHrefs[index]}>{buttonString}</Button>//<NavLink className="navLinkBtn" key={buttonString} to={buttonLoggedOutArrayHrefs[index]}></NavLink>
+        <NavLink className="navLinkBtn" key={buttonString} to={buttonLoggedOutArrayHrefs[index]}><Button size="large" color="inherit" >{buttonString}</Button></NavLink>
       ))
       return (
         <div className="bg">

@@ -9,6 +9,7 @@ import {
   withRouter
 } from "react-router-dom";
 import injectSheet from 'react-jss';
+import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -227,6 +228,19 @@ class HomePageCard extends React.Component {
       <StyledCard />
     )
 
+  }
+}
+
+const authentication = {
+  authenticate() {
+    axios.get('/api/auth',{
+      headers: {
+          email: this.state.loginFields.email,
+          password: this.state.loginFields.password
+      }
+  }).then(function (response){
+      const status = response.status == 200 ? true : false;
+  }) 
   }
 }
 

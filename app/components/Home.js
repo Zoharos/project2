@@ -43,16 +43,16 @@ class HomePage extends React.Component {
         if((this.state.registrationFields.regEmail1 == this.state.registrationFields.regEmail2) || (this.state.registrationFields.regPassword1 == this.state.registrationFields.regPassword2))
         {
             axios.post('/api/login',{
-                    firstName: this.state.registrationFields.regFirstName,
+                    /* firstName: this.state.registrationFields.regFirstName,
                     lastName: this.state.registrationFields.regLastName,
                     email1: this.state.registrationFields.regEmail1,
                     email2: this.state.registrationFields.regEmail2,
                     password1: this.state.registrationFields.regPassword1,
-                    password2: this.state.registrationFields.regPassword2,
-                    //token: JSON.parse(localStorage.getItem('token'))
+                    password2: this.state.registrationFields.regPassword2, */
+                    token: JSON.parse(localStorage.getItem('token'))
                 })
                 .then(function (response) {
-                //console.log(response);
+                    console.log(response);
             }) 
         }
     }
@@ -117,11 +117,12 @@ class HomePage extends React.Component {
         console.log(this.state);
       }
     injectStyleFunc(comp){
-        const styledComp = injectSheet(styles()[0])(comp)
-        return <styledComp />;
+        const StyledComp = injectSheet(styles()[0])(comp)
+        return <StyledComp />;
     }
     render()
     {
+      const { classes } = this.props;
       const buttonLoggedOutArray = ["מתווכים","השכרה","מכירה"];
       const buttonLoggedOutArrayHrefs = [this.handleClickOpen,"./real_estate","./"];
       const buttonsArray =  buttonLoggedOutArray.map((buttonString, index) => (
@@ -129,7 +130,7 @@ class HomePage extends React.Component {
         <Button size="large" color="inherit" key={buttonString} onClick={buttonLoggedOutArrayHrefs[index]}>{buttonString}</Button> :
         <Button size="large" color="inherit" key={buttonString} href={buttonLoggedOutArrayHrefs[index]}>{buttonString}</Button>//<NavLink className="navLinkBtn" key={buttonString} to={buttonLoggedOutArrayHrefs[index]}></NavLink>
       ))
-      const Home = ({classes}) => ( 
+      return (
         <div className="bg">
             <NavBar navButtons={buttonsArray} enterHoverState={this.enterHoverState} leaveHoverState={this.leaveHoverState} hoverState={this.state.hoverState} />
             <LoginDialog register={this.register} login={this.login} handleTextFields={this.handleTextFields} close={this.handleClickClose} openReg={this.state.openRegistry} onClickSwitch={this.handleSwitchDialog} open={this.state.openLogin} onClick={this.handleClickOpen} Transition={this.Transition}/>
@@ -141,11 +142,7 @@ class HomePage extends React.Component {
             </div>
         </div>
       )
-      const HomeComp = injectSheet(styles()[0])(Home);
-    return (
-        <HomeComp />
-      )
     }
   }
 
-export default HomePage;
+export default injectSheet(styles()[0])(HomePage);

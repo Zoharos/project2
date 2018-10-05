@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import https from 'https';
 import fs from 'fs';
 import router from './router';
+import apiRouter from './api_router'
 
 //Encryption assests
 const privateKey  = fs.readFileSync('./app/server/encryption/localhost.key', 'utf8');
@@ -22,7 +23,10 @@ app.use(assets);
 const uri = "mongodb+srv://real-nadlan-users:z8LzAyjpdk4tXpOI@golancorporation-cyaxt.gcp.mongodb.net/Real-Nadlan?retryWrites=true";
 mongoose.connect(uri, {useNewUrlParser: true});
 
-app.get('*', router);
+//Every route with api
+app.use('/api', apiRouter);
+//Every route that doesn't have api
+app.get(/^((?!api).)*$/, router);
 
 //https connection
 const httpsServer = https.createServer(credentials,app, () => {

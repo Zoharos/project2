@@ -58,5 +58,5 @@ export default function router(req, res) {
             const css = sheetsRegistry.toString();
             res.status(200).send(renderFullPage(html, css));
         })
-        .catch(err => res.status(404).send(`${err}: Oh No! I cannot find the telepathic pokemon... maybe they knew we were coming!`));
+        .catch(err => res.status(404).send(`${err}`));
 };

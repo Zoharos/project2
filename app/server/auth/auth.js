@@ -8,13 +8,17 @@ function createJWT(id) {
     return token;
 }
 
-function verifyJWT(token) {
-    try {
-        const data = jwt.verify(token, key);
-        return data;
-    }
-    catch(err){ 
-        return ;
+function verifyJWT(jwtHeader) {
+    if(jwtHeader.split(' ')[0] === 'Bearer')
+    {
+        const token = jwtHeader.split(' ')[1];
+        try {
+            const data = jwt.verify(token, key);
+            return data;
+        }
+        catch(err){ 
+            return ;
+        }
     }
 }
 

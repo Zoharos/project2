@@ -231,17 +231,14 @@ class HomePageCard extends React.Component {
   }
 }
 
-const authentication = {
-  authenticate() {
-    axios.get('/api/auth',{
-      headers: {
-          email: this.state.loginFields.email,
-          password: this.state.loginFields.password
-      }
+function authenticate() {
+  return axios.post('/api/login',{
+
   }).then(function (response){
       const status = response.status == 200 ? true : false;
+      console.log(status);
+      return false;
   }) 
-  }
 }
 
 const fakeAuth = {
@@ -259,7 +256,7 @@ const fakeAuth = {
 const PrivateRoute = ({component: Component}) => (
   <Route
     render={props => 
-      fakeAuth.isAuthenticated ? (
+      console.log(authenticate().then()) ? (
         <Component {...props} />
       ) : (
         <Redirect to={{

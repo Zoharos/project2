@@ -42,5 +42,10 @@ module.exports = {
       loader: 'babel-loader'
      }
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./app/index.html"
+    })
+  ]
 };

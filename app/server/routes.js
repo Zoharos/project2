@@ -1,7 +1,6 @@
 const routes = [
     '/',
-    '/estate',
-    '/pokemon/ability/:ability'
+    '/estate'
 ]
 
 export default routes;

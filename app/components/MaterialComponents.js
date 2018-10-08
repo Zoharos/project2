@@ -31,7 +31,7 @@ import {withStyles} from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import {MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
-function styles() {
+function styles()  {
   const theme = createMuiTheme({
     palette: {
       primary: {
@@ -39,7 +39,7 @@ function styles() {
       },
     },
   });
-    const styles = {
+    const styles = theme => ({
       menuButton: {
         marginLeft: -18,
         marginRight: 10,
@@ -80,7 +80,7 @@ function styles() {
       fullWidth: {
         width: '100%'
       },
-    };
+    });
     return [styles,theme];
 }
 
@@ -232,13 +232,15 @@ class HomePageCard extends React.Component {
 }
 
 function authenticate() {
-  return axios.post('/api/login',{
+ return axios.post('/api/login',{
 
   }).then(function (response){
       const status = response.status == 200 ? true : false;
-      console.log(status);
-      return false;
-  }) 
+      return status;
+  }).catch(function (error){
+    alert(error.response.data);
+    return false;
+  })
 }
 
 const fakeAuth = {
@@ -254,18 +256,11 @@ const fakeAuth = {
 }
 
 const PrivateRoute = ({component: Component}) => (
-  <Route
-    render={props => 
-      console.log(authenticate().then()) ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to={{
-          pathname: "/"
-        }}
-        />
-      )
-    }
-  />  
+  authenticate().then(function(value){
+   value ? 
+  <Route render={props => (<Component {...props} />)}/> :
+  <Route render={(<Redirect to={{pathname: "/"}}/>)}/> 
+  }) 
 );
 
 const LoginDialog = withStyles(styles)(LoginDialogBar);

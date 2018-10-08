@@ -39,7 +39,7 @@ router.get('/', (req, res) => {
   })
 router.post('/', (req, res) => {
     const data = verifyJWT(req.headers.authorization);
-    data ? res.status(200).send(data) : res.status(400).send('Not a valid JWT');
+    data ? res.status(200).send(data) : res.status(401).send('Not a valid JWT');
   })
 
   module.exports = router

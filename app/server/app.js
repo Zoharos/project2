@@ -4,7 +4,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import https from 'https';
 import fs from 'fs';
-import router from './router';
+import pagesRouter from './pagesRouter';
 import apiRouter from './api_router'
 
 //Encryption assests
@@ -26,7 +26,7 @@ mongoose.connect(uri, {useNewUrlParser: true});
 //Every route with api
 app.use('/api', apiRouter);
 //Every route that doesn't have api
-app.get(/^((?!api).)*$/, router);
+app.get(/^((?!api).)*$/, pagesRouter);
 
 //https connection
 const httpsServer = https.createServer(credentials,app, () => {

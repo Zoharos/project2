@@ -34,7 +34,7 @@ class Main extends React.Component {
 
     const generateClassName = createGenerateClassName();
 
-ReactDOM.hydrate((
+ReactDOM.render((
     <Router>
         <JssProvider generateClassName={generateClassName}>
             <MuiThemeProvider theme={theme}>

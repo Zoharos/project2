@@ -9,16 +9,17 @@ function createJWT(id) {
 }
 
 function verifyJWT(jwtHeader) {
-    if(jwtHeader.split(' ')[0] === 'Bearer')
-    {
-        const token = jwtHeader.split(' ')[1];
-        try {
-            const data = jwt.verify(token, key);
-            return data;
+    try {
+        if(jwtHeader.split(' ')[0] === 'Bearer')
+        {
+            const token = jwtHeader.split(' ')[1];
+
+                const data = jwt.verify(token, key);
+                return data;
         }
-        catch(err){ 
-            return ;
-        }
+    }      
+    catch(err){ 
+        return ;
     }
 }
 

@@ -5,9 +5,8 @@ import routes from './routes';
 router.use(express.json());
 
 router.get('/*', (req, res) => {
-    //const match = routes.reduce((acc, route) => matchPath(req.url, { path: route, exact: true }) || acc, null);
     //console.log(req.url);
-    const match = routes.reduce((acc, route) => (route == req.url ? true : false) || acc , null)
+    const match = routes.reduce((acc, route) => (route == req.url ? true : false) || acc , null);
     if (!match) {
         res.status(404).send('page not found');
     }

@@ -5,8 +5,9 @@ import Button from '@material-ui/core/Button';
 import Slide from '@material-ui/core/Slide';
 import {withStyles} from '@material-ui/core/styles';
 import injectSheet from 'react-jss';
-import {BrowserRouter, Route, NavLink} from 'react-router-dom';
-import {NavBar, LoginDialog, HomePageCard,styles} from './MaterialComponents';
+import { NavLink } from 'react-router-dom';
+import RenderHomePage from './renderHomePage';
+import {NavBar, LoginDialog, HomePageCard, styles, auth} from '../MaterialComponents';
 
 
 class HomePage extends React.Component {
@@ -66,8 +67,11 @@ class HomePage extends React.Component {
             console.log(response.data);
             localStorage.setItem('token',JSON.stringify(response.data.token));
             localStorage.setItem('email',JSON.stringify(response.data.email));
+            auth.authenticate();
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
-        }) 
+        }).catch(function (err){
+            console.log(err);
+        })
     }
     enterHoverState()
     {
@@ -124,26 +128,32 @@ class HomePage extends React.Component {
     render()
     {
       const { classes } = this.props;
-      const buttonLoggedOutArray = ["מתווכים","השכרה","מכירה"];
-      const buttonLoggedOutArrayHrefs = [this.handleClickOpen,"./estate","./"];
-      const buttonsArray =  buttonLoggedOutArray.map((buttonString, index) => (
-        typeof buttonLoggedOutArrayHrefs[index] === 'function' ? 
-        <Button size="large" color="inherit" key={buttonString} onClick={buttonLoggedOutArrayHrefs[index]}>{buttonString}</Button> :
-        <NavLink className="navLinkBtn" key={buttonString} to={buttonLoggedOutArrayHrefs[index]}><Button size="large" color="inherit" >{buttonString}</Button></NavLink>
+      const buttonsConfigArray = [
+          {name: "מתווכים", onClick: "./"},
+          {name: "השכרה", onClick: "./estate"},
+          {name: "מכירה", onClick: "./"}
+        ];
+      //const buttonLoggedOutArrayHrefs = [this.handleClickOpen,"./estate","./"];
+      const buttonsArray =  buttonsConfigArray.map((button) => (
+        <NavLink className="navLinkBtn" key={button.name} to={button.onClick}><Button size="large" color="inherit" >{button.name}</Button></NavLink>
       ))
       return (
-        <div className="bg">
-            <NavBar navButtons={buttonsArray} enterHoverState={this.enterHoverState} leaveHoverState={this.leaveHoverState} hoverState={this.state.hoverState} />
-            <LoginDialog register={this.register} login={this.login} handleTextFields={this.handleTextFields} close={this.handleClickClose} openReg={this.state.openRegistry} onClickSwitch={this.handleSwitchDialog} open={this.state.openLogin} onClick={this.handleClickOpen} Transition={this.Transition}/>
-            <div className={classes.right + ' ' + classes.homeCard}>
-                <HomePageCard cardImage="../statics/rent-sign.jpg" leftBtnTitle="היכנס" rightBtnTitle="קרא עוד" title="השכרה" content="לוח דירות להשכרה ממתווכים הראשון מסוגו בארץ"/>
-            </div>
-            <div className={classes.homeCard}>
-                <HomePageCard cardImage="../statics/sale-sign.jpg" leftBtnTitle="היכנס" rightBtnTitle="קרא עוד" title="מכירה" content="לוח דירות למכירה ממתווכים הראשון מסוגו בארץ"/>
-            </div>
-        </div>
+        <RenderHomePage buttonsArray={buttonsArray} 
+        enterHoverState={this.enterHoverState} 
+        leaveHoverState={this.leaveHoverState} 
+        hoverState={this.state.hoverState}
+        register={this.register} 
+        login={this.login} 
+        handleTextFields={this.handleTextFields} 
+        close={this.handleClickClose} 
+        openReg={this.state.openRegistry} 
+        handleSwitchDialog={this.handleSwitchDialog} 
+        openLogin={this.state.openLogin} 
+        handleClickOpen={this.handleClickOpen} 
+        Transition={this.Transition}
+        />
       )
     }
   }
 
-export default injectSheet(styles()[0])(HomePage);
+export default withStyles(styles()[0])(HomePage);

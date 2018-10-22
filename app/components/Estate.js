@@ -4,7 +4,8 @@ import injectSheet from 'react-jss';
 import {
   NavBar,
   LoginDialog, 
-  styles
+  styles,
+  EstateNavBar,
   } from './MaterialComponents';
 
 class Estate extends React.Component {
@@ -18,7 +19,7 @@ class Estate extends React.Component {
     {  
         return (
         <div>
-            <NavBar  />
+            <EstateNavBar  />
         </div>
       )
     }

@@ -5,7 +5,7 @@ import {
     Switch
 } from 'react-router-dom';
 import List from './List';
-import Home from './Home';
+import Home from './Home/index';
 import Estate from './Estate';
 import { PrivateRoute } from './MaterialComponents';
 

@@ -30,6 +30,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {withStyles} from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import {MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { mailFolderListItems, otherMailFolderListItems } from './List';
 
 function styles()  {
   const theme = createMuiTheme({
@@ -40,49 +49,118 @@ function styles()  {
     },
   });
     const styles = theme => ({
-      menuButton: {
-        marginLeft: -18,
-        marginRight: 10,
-      },
-      homeCard: {
-        margin: '10%',
-        width: 400,
-      },
-      right: {
-        float: 'right',
-      },
-      appBar: {
-        background: 'transparent',
-        boxShadow: 'none',
-        transition: 'all 0.5s ease',
-        '&:hover': {
-          background: 'floralwhite',
-          color: 'black',
-        }
-      },
-      navLinkBtn: {
-        textDecoration: 'none',
-        color: 'inherit',
-      },
-      flex: {
-        flex: 1
-      },
-      dialogContent: {
-        marginTop: 500
-      },
-      card: {
-        maxWidth: 345,
-      },
-      media: {
-        height: 140,
-        backgroundSize: '100% 100%',
-      },
-      fullWidth: {
-        width: '100%'
-      },
+        menuButton: {
+          marginLeft: -18,
+          marginRight: 10,
+        },
+        homeCard: {
+          margin: '10%',
+          width: 400,
+        },
+        right: {
+          float: 'right',
+        },
+        appBar: {
+          background: 'transparent',
+          boxShadow: 'none',
+          transition: 'all 0.5s ease',
+          '&:hover': {
+            background: 'floralwhite',
+            color: 'black',
+          }
+        },
+        navLinkBtn: {
+          textDecoration: 'none',
+          color: 'inherit',
+        },
+        flex: {
+          flex: 1
+        },
+        dialogContent: {
+          marginTop: 500
+        },
+        card: {
+          maxWidth: 345,
+        },
+        media: {
+          height: 140,
+          backgroundSize: '100% 100%',
+        },
+        fullWidth: {
+          width: '100%'
+        },
     });
     return [styles,theme];
 }
+
+const styles_estate = theme => ({
+  root: {
+    flexGrow: 1,
+    height: 440,
+    zIndex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    display: 'flex',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+   /*  marginRight: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }), */
+  },
+  menuButton: {
+    marginLeft: 20,
+    marginRight: 30,
+  },
+  menuButtonOpen: {
+    marginLeft: 20,
+    marginRight: 6,
+  },
+  hide: {
+    display: 'none',
+  },
+  drawerPaper: {
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerPaperClose: {
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: theme.spacing.unit * 7,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing.unit * 9,
+    },
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
+  },
+});
 
 /* const mButton = ({ classes, children }) => (
   <MuiThemeProvider theme={theme}>
@@ -185,6 +263,62 @@ class NavBar extends React.Component {
   }
 }
 
+const drawerWidth = 240;
+
+class MiniDrawer extends React.Component {
+  state = {
+    open: false,
+  };
+
+  handleDrawer = () => {
+    this.setState({ open: !this.state.open });
+  };
+
+  render() {
+    const { classes, theme } = this.props;
+
+    return (
+      <div className={classes.root} dir="rtl">
+        <AppBar
+          position="absolute"
+          className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
+        >
+          <Toolbar disableGutters={!this.state.open}>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={this.handleDrawer}
+              className={classNames(!this.state.open && classes.menuButton, this.state.open && classes.menuButtonOpen)}
+            >
+              { this.state.open ? <ChevronRightIcon /> : <MenuIcon /> }
+            </IconButton>
+            <Typography variant="headline" color="inherit" noWrap>
+              Mini variant drawer
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+          }}
+          open={this.state.open}
+        >
+          <div className={classNames(classes.toolbar)} />
+          <Divider />
+          <List>{mailFolderListItems}</List>
+          <Divider />
+          <List>{otherMailFolderListItems}</List>
+        </Drawer>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Typography noWrap>{'You think water moves fast? You should see ice.'}</Typography>
+        </main>
+      </div>
+    );
+  }
+}
+
 class HomePageCard extends React.Component {
   constructor(props) {
     super(props);
@@ -231,37 +365,31 @@ class HomePageCard extends React.Component {
   }
 }
 
-function authenticate() {
- return axios.post('/api/login',{
-
-  }).then(function (response){
-      const status = response.status == 200 ? true : false;
-      return status;
-  }).catch(function (error){
-    alert(error.response.data);
-    return false;
-  })
-}
-
-const fakeAuth = {
-  isAuthenticated: true,
-  authenticate(cb) {
+const auth = {
+  isAuthenticated: false,
+  authenticate() {
     this.isAuthenticated = true;
-    setTimeout(cb,100);
   },
-  signout(cb) {
+  signout() {
     this.isAuthenticated = false;
-    setTimeout(cb,100);
   }
 }
 
-const PrivateRoute = ({component: Component}) => (
-  authenticate().then(function(value){
-   value ? 
-  <Route render={props => (<Component {...props} />)}/> :
-  <Route render={(<Redirect to={{pathname: "/"}}/>)}/> 
-  }) 
-);
+ const PrivateRoute = ({component: Component}) => (
+  <Route
+    render={props => 
+      auth.isAuthenticated ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to={{
+          pathname: "/"
+        }}
+        />
+      )
+    }
+  />  
+); 
 
 const LoginDialog = withStyles(styles)(LoginDialogBar);
-export {NavBar,LoginDialog,styles,PrivateRoute,HomePageCard,fakeAuth};
+const EstateNavBar = withStyles(styles_estate, { withTheme: true })(MiniDrawer);
+export {NavBar,LoginDialog,styles,PrivateRoute,HomePageCard,auth,EstateNavBar};

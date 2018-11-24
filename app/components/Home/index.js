@@ -3,12 +3,11 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Slide from '@material-ui/core/Slide';
-import {withStyles} from '@material-ui/core/styles';
 import injectSheet from 'react-jss';
 import { NavLink } from 'react-router-dom';
 import RenderHomePage from './renderHomePage';
-import {NavBar, LoginDialog, HomePageCard, styles, auth} from '../MaterialComponents';
-
+const constants = require('./constants');
+import { auth, Elink } from '../MaterialComponents';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -16,7 +15,6 @@ class HomePage extends React.Component {
       this.state = {
         openLogin: false,
         openRegistry: false,
-        hoverState: false,
         registrationFields: {
             regFirstName: '',
             regLastName: '',
@@ -35,8 +33,6 @@ class HomePage extends React.Component {
       this.handleClickClose = this.handleClickClose.bind(this);
       this.handleTextFields = this.handleTextFields.bind(this);
       this.print = this.print.bind(this);
-      this.enterHoverState = this.enterHoverState.bind(this);
-      this.leaveHoverState = this.leaveHoverState.bind(this);
       this.login = this.login.bind(this);
       this.register = this.register.bind(this);
     }
@@ -71,18 +67,6 @@ class HomePage extends React.Component {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
         }).catch(function (err){
             console.log(err);
-        })
-    }
-    enterHoverState()
-    {
-        this.setState({
-        hoverState: true
-        })
-    }
-    leaveHoverState()
-    {
-        this.setState({
-        hoverState: false
         })
     }
     handleTextFields(textFieldObj) {
@@ -128,22 +112,13 @@ class HomePage extends React.Component {
     render()
     {
       const { classes } = this.props;
-      const buttonsConfigArray = [
-          {name: "מתווכים", onClick: "./"},
-          {name: "השכרה", onClick: "./estate"},
-          {name: "מכירה", onClick: "./"}
-        ];
-      //const buttonLoggedOutArrayHrefs = [this.handleClickOpen,"./estate","./"];
-      const buttonsArray =  buttonsConfigArray.map((button) => (
-        <NavLink className="navLinkBtn" key={button.name} to={button.onClick}><Button size="large" color="inherit" >{button.name}</Button></NavLink>
+      const buttonsArray =  constants.navButtonsConfigArray.map((button) => (
+        <Elink key={button.name} buttonString={button.name} to={button.onClick}></Elink>
       ))
       return (
         <RenderHomePage buttonsArray={buttonsArray} 
-        enterHoverState={this.enterHoverState} 
-        leaveHoverState={this.leaveHoverState} 
-        hoverState={this.state.hoverState}
         register={this.register} 
-        login={this.login} 
+        login={this.login}
         handleTextFields={this.handleTextFields} 
         close={this.handleClickClose} 
         openReg={this.state.openRegistry} 
@@ -156,4 +131,4 @@ class HomePage extends React.Component {
     }
   }
 
-export default withStyles(styles()[0])(HomePage);
+export default HomePage;

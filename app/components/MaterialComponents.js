@@ -162,18 +162,28 @@ const styles_estate = theme => ({
   },
 });
 
-/* const mButton = ({ classes, children }) => (
-  <MuiThemeProvider theme={theme}>
-  <Button variant='contained' color='primary' className={classes.myButton}>
-    <span className={classes.myLabel}>
-      {children}
-    </span>
-  </Button>
-  </MuiThemeProvider>
-) */
+class Elink extends React.Component {
+  parseTo(to) {
+    let parser = document.createElement('a');
+    parser.href = to;
+    return parser;
+  }
+  isInternalUrl(toLoaction) {
+    return window.location.host === toLoaction.host;
+  }
 
+  render() {
+    const {to, buttonString, isNav, ...rest} = this.props;
+    const toLocation = this.parseTo(to);
+    const isInternal= this.isInternalUrl(toLocation);
+    const element = isInternal ? ( isNav ? <NavLink {...rest} className="navLinkBtn" key={buttonString} to={toLocation.pathname}><Button size="large" color="inherit" >{buttonString}</Button></NavLink> 
+    : <Link {...rest} className="navLinkBtn" key={buttonString} to={toLocation.pathname}><Button size="large" color="inherit" >{buttonString}</Button></Link> ) 
+    : <Button {...rest} href={toLocation.pathname} size="large" color="inherit" >{buttonString}</Button>
 
-  
+    return element;
+  }
+}
+
 function LoginDialogBar(props)
 {
    const {classes} = props;
@@ -392,4 +402,4 @@ const auth = {
 
 const LoginDialog = withStyles(styles)(LoginDialogBar);
 const EstateNavBar = withStyles(styles_estate, { withTheme: true })(MiniDrawer);
-export {NavBar,LoginDialog,styles,PrivateRoute,HomePageCard,auth,EstateNavBar};
+export {NavBar,LoginDialog,styles,PrivateRoute,HomePageCard,auth,EstateNavBar,Elink};
